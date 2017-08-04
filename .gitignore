@@ -1,0 +1,10 @@
+/*
+!dist/
+!src/
+!.gitignore
+!package.json
+!LICENSE
+!README.md
+!gulpfile.js
+!server.config.js
+!.gitkeep
