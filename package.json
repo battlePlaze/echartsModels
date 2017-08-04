@@ -1,11 +1,38 @@
 {
   "name": "sxcolormap",
   "version": "1.0.0",
-  "description": "",
+  "description": "thers is a data show plugin with map",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "publishConfig": {
+    "registry": "http://130.10.8.208/repository/npm/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://130.10.8.210/bksxfed/fedInterface/sxcolormap.git"
+  },
+  "author": "雷佳伟",
+  "maintainers": [
+    {
+      "name": "郑玉燕",
+      "email": "314186096@qq.com"
+    },
+    {
+      "name": "王建永",
+      "email": "275785124@qq.com"
+    },
+    {
+      "name": "雷佳伟",
+      "email": "729115248@qq.com"
+    }
+  ],
+  "bugs": {
+    "url": "http://130.10.8.210/bksxfed/fedInterface/sxcolormap/issues"
+  },
+  "homepage": "http://130.10.8.210/bksxfed/fedInterface/sxcolormap.git#README.md",
+  "dependencies": {},
+  "devDependencies":{}
 }
