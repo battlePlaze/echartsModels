@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>map</title>
+</head>
+<body>
+<div id="map">
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="common/js/raphael.min.js"></script>
+<script type="text/javascript" src="common/js/sxcolormap.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var data = [
+            {
+                "regionId":"110114002000",
+                "name":"南口镇"
+            },
+            {
+                "regionId":"110114118000",
+                "name":"流村镇"
+            }
+        ];
+
+        $('#map').colorMap(data,{
+
+        });
+    });
+</script>
