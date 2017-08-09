@@ -33,6 +33,11 @@
     "url": "http://130.10.8.210/bksxfed/fedInterface/sxcolormap/issues"
   },
   "homepage": "http://130.10.8.210/bksxfed/fedInterface/sxcolormap.git#README.md",
-  "dependencies": {},
-  "devDependencies":{}
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "raphael": "^2.2.7",
+    "jquery": "1.12.4"
+  }
 }
