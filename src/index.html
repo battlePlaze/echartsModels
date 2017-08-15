@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>map</title>
+    <link href="styles/s1/css/colormap.css" type="text/css" rel="stylesheet"/>
 </head>
 <style>
     #map{
-        width: 80%;
+        width: 700px;
         height:680px;
         border: 1px solid #000;
         margin: 100px auto;
@@ -24,28 +25,46 @@
 <script type="text/javascript" src="common/js/sxcolormap.js"></script>
 <script type="text/javascript">
     $(function(){
+
         var data = [
             {
                 "regionId":"110114104000",
-                "name":"阳坊镇"
+                "name":"阳坊镇",
+                "fill":"#ff0"
             },
             {
                 "regionId":"110114111000",
-                "name":"南邵镇"
+                "name":"南邵镇",
+                "fill":"#f00"
             },
             {
                 "regionId":"110114002000",
-                "name":"南口镇"
+                "name":"南口镇",
+                "fill":"#00f"
             },
             {
                 "regionId":"110114118000",
-                "name":"流村镇"
+                "name":"流村镇",
+                "fill":"#f0f"
             }
         ];
 
         $('#map').colorMap(data,{
-            "offsetX":-100,
-            "offsetY":0
+            "offsetX":0,
+            "offsetY":0,
+            "sample":[{"name":"10-20人","color":"#f0f"},{"name":"20-40人","color":"#ff0"},{"name":"40-60人","color":"#0ff"},{"name":"60-80人","color":"#f00"}],
+            "popWin":function(t,data){
+
+            },
+            "elemClick":function(event,t,data){
+
+            },
+            "textStyle":{
+                "fill":"#ac0"
+            },
+            "setText":function(t,data){
+
+            }
         });
     });
 </script>
