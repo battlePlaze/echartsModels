@@ -1,0 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.svgDiv{
+    position: relative;
+}
+.mapSample{
+    list-style: none;
+    padding: 12px 26px 0px 12px;
+    border: 1px solid rgb(204, 204, 204);
+    position: absolute;
+    bottom: 7px;
+    right: 3px;
+}
+.mapSample li{
+    height: 14px;
+    color: rgb(0, 0, 0);
+    line-height: 14px;
+    margin-bottom: 13px;
+    overflow: hidden;
+    font-size: 14px;
+    font-family: 微软雅黑;
+}
+.mapSample li > span{
+    padding-left: 12px;
+    line-height: 100%;
+    margin-right: 6px;
+}
