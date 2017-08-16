@@ -1,6 +1,6 @@
 if (typeof jQuery === 'undefined') {
-    throw new Error('sxcolormap\'s JavaScript requires jQuery');
     alert('请先加载jquery');
+    throw new Error('sxcolormap\'s JavaScript requires jQuery');
 }
 
 window.console = window.console || (function () {
@@ -8,14 +8,15 @@ window.console = window.console || (function () {
     c.log = c.warn = c.debug = c.info = c.error = c.time = c.dir = c.profile= c.clear = c.exception = c.trace = c.assert = function(){};
     return c;
 })();
+
 (function(window,$){
 
     $.fn.colorMap = function(){
 
-        var arg = arguments;
-        var _this = $(this);
-        var returnData = [];
-        var r;
+        var arg = arguments;//参数
+        var _this = $(this);//当前调用对象
+        var returnData = [];//数据
+        var r;//绘制对象
         var mapSet = {};
 
 
@@ -70,7 +71,7 @@ window.console = window.console || (function () {
                             arg[1].click(event,this,$(this).data("data"));
                         }
                     }).mouseover(function(event){
-
+                        setPop(event,this,$(this).data("data"))
                     }).mousemove(function(event){
 
                     }).mouseout(function (event) {
@@ -78,6 +79,8 @@ window.console = window.console || (function () {
                     });
                     $(elem).data("data",pathArr[i]);
 
+
+                    //文字
                     var bbox = elem.getBBox(false);
                     var text_x = bbox.x + (bbox.width / 2);
                     var text_y = bbox.y + (bbox.height / 2);
@@ -85,10 +88,11 @@ window.console = window.console || (function () {
                     var textStyle = {
                         "font-family":"微软雅黑",
                         "font-size":"6px",
-                        "cursor":"pointer"
+                        "cursor":"pointer",
+                        "fill":"#000"
                     };
                     $.extend(true,textStyle,arg[1].textStyle);
-                    var showName = pathArr[i].data['showName'] || pathArr[i].data['name'];
+                    var showName = pathArr[i].data['showName'] || pathArr[i].data['name'] || pathArr[i]['name'];
                     var textElem = r.text(text_x,text_y,showName).attr(textStyle).click(function(){
 
                     }).mouseover(function(event){
@@ -100,6 +104,18 @@ window.console = window.console || (function () {
                     });
                     textElem.data("data",pathArr[i]);
 
+                    if(typeof arg[1].setText === 'function'){
+                        var setText = arg[1].setText(_this,pathArr[i].data);
+
+                        if(setText){
+                            textElem.translate(setText.x,setText.y);
+                            if(setText.direction === 'y'){
+                                console.log("y");
+                                $(textElem[0]).attr("writing-mode","tb");
+                            }
+                        }
+
+                    }
 
                 }
 
@@ -108,7 +124,7 @@ window.console = window.console || (function () {
                 throw new Error('该区域没有svg数据请联系软件设计部');
             }
 
-        };
+        }
 
         //获取路径
         function getPath(obj){
@@ -127,7 +143,7 @@ window.console = window.console || (function () {
         //迭代 此处有优化 行政区划规律不清楚 可减少迭代
         function recursionPath(arr,obj){
             for(var i = 0 ; i < arr.length;i++){
-                if(arr[i].regionId == obj){
+                if(arr[i].regionId === obj){
                     returnData = arr[i]['children'];
                     return;
                 }else{
@@ -144,7 +160,7 @@ window.console = window.console || (function () {
         function recursionPathByArr(arr,obj){
             for(var i = 0 ; i < arr.length; i++){
                 for(var j = 0; j < obj.length;j++){
-                    if(arr[i]["regionId"] == obj[j]["regionId"]){
+                    if(arr[i]["regionId"] === obj[j]["regionId"]){
                         arr[i].data = obj[j];
                         returnData.push(arr[i]);
                         obj.splice(j,1);
@@ -160,16 +176,26 @@ window.console = window.console || (function () {
         //地图悬浮
         function mapMouseover(){
 
-        };
+        }
 
         //地图点击
         function mapClick(){
 
-        };
+        }
 
 
         //气泡设置
-        function setPop(obj){
+        function setPop(event,t,data){
+            if(arg[1]){
+                if(typeof arg[1].popWin === "function"){
+                   var htmlStr =  arg[1].popWin(t,data);
+                   if(/id=['"]mapTip['"]/igm.test(htmlStr)){
+
+                   }else{
+
+                   }
+                }
+            }
 
         }
 
@@ -197,7 +223,7 @@ window.console = window.console || (function () {
                 var ran = Math.floor(Math.random()*16);
                 returnStr = returnStr + arr[ran];
             }
-            if(returnStr == '#ffffff' || returnStr == '#000000'){
+            if(returnStr === '#ffffff' || returnStr === '#000000'){
                 arguments.callee();
             }else{
                 return returnStr;
@@ -205,6 +231,8 @@ window.console = window.console || (function () {
 
         }
 
+
+        //图例
         function mapSample(){
             var htmlStr = '';
             if(arg[1]){
@@ -218,7 +246,7 @@ window.console = window.console || (function () {
                             break;
                         }
 
-                        if(i == (arg[1].sample.length - 1)){
+                        if(i === (arg[1].sample.length - 1)){
                             htmlStr =  htmlStr + '</ul>'
                         }
                     }
@@ -226,16 +254,16 @@ window.console = window.console || (function () {
                     return;
                 }
 
-                if(typeof arg[1].sample == 'function'){
+                if(typeof arg[1].sample === 'function'){
                     htmlStr = arg[1].sample();
                     $('#' + ranId).append(htmlStr);
                     return;
                 }
 
-                if(typeof arg[1].sample == 'string'){
+                if(typeof arg[1].sample === 'string'){
                     htmlStr = arg[1].sample;
                     $('#' + ranId).append(htmlStr);
-                    return;
+                    return null;
                 }
 
 
