@@ -71,11 +71,12 @@ window.console = window.console || (function () {
                             arg[1].click(event,this,$(this).data("data"));
                         }
                     }).mouseover(function(event){
-                        setPop(event,this,$(this).data("data"))
+                        setPop(event,this,$(this).data("data"));
+                        setPopPosition(event);
                     }).mousemove(function(event){
-
+                        setPopPosition(event);
                     }).mouseout(function (event) {
-
+                        $('#mapTip').remove();
                     });
                     $(elem).data("data",pathArr[i]);
 
@@ -96,13 +97,14 @@ window.console = window.console || (function () {
                     var textElem = r.text(text_x,text_y,showName).attr(textStyle).click(function(){
 
                     }).mouseover(function(event){
-
+                        setPop(event,this,$(this).data("data"));
+                        setPopPosition(event);
                     }).mousemove(function(event){
-
+                        setPopPosition(event);
                     }).mouseout(function(event){
-
+                        $('#mapTip').remove();
                     });
-                    textElem.data("data",pathArr[i]);
+                    $(textElem).data("data",pathArr[i]);
 
                     if(typeof arg[1].setText === 'function'){
                         var setText = arg[1].setText(_this,pathArr[i].data);
@@ -110,7 +112,6 @@ window.console = window.console || (function () {
                         if(setText){
                             textElem.translate(setText.x,setText.y);
                             if(setText.direction === 'y'){
-                                console.log("y");
                                 $(textElem[0]).attr("writing-mode","tb");
                             }
                         }
@@ -184,19 +185,34 @@ window.console = window.console || (function () {
         }
 
 
-        //气泡设置
+        //气泡设置 可以优化 操作隐藏显示比操作dom好
         function setPop(event,t,data){
+            var htmlStr = '';
             if(arg[1]){
                 if(typeof arg[1].popWin === "function"){
-                   var htmlStr =  arg[1].popWin(t,data);
+                   htmlStr =  arg[1].popWin(t,data);
                    if(/id=['"]mapTip['"]/igm.test(htmlStr)){
-
+                       $(htmlStr).appendTo('body');
                    }else{
-
+                       $(htmlStr).appendTo('body').attr('id','mapTip').attr('class','mapTip');
+                       $('<span class="pot"></span><span class="bot"></span>').appendTo($('.mapTip'));
                    }
                 }
             }
 
+        }
+
+        function setPopPosition(event){
+            var pageX = event.pageX || event.clientX + $(document).scrollLeft() + document.body.clientLeft
+            var pageY = event.pageY || event.clientY + $(document).scrollTop() + document.body.clientTop;
+
+            var mapTip_width = $('#mapTip').outerWidth();
+            var mapTip_height = $('#mapTip').outerHeight();
+
+            $('#mapTip').css({
+                "left":(pageX - mapTip_width/2) + 'px',
+                "top":(pageY - mapTip_height - 25) + 'px'
+            });
         }
 
 

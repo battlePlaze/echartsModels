@@ -27,3 +27,33 @@
     line-height: 100%;
     margin-right: 6px;
 }
+#mapTip{
+    position: absolute;
+}
+.mapTip{
+    padding:5px;
+    border:1px solid #ccc;
+    border-radius:3px;
+    position:absolute;
+    color:#000;
+    font-family:微软雅黑;
+    background:#fff;
+}
+.pot,.bot{
+    display: block;
+    border-width: 10px;
+    position: absolute;
+    bottom: -21px;
+    left: 43%;
+    border-style: solid dashed dashed;
+    border-color:#ccc transparent transparent ;
+    font-size: 0;
+    line-height: 0;
+}
+.bot{
+    bottom: -20px;
+    border-color: #fff transparent transparent;
+}
+
+
+

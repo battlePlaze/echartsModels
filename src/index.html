@@ -54,7 +54,7 @@
             "offsetY":0,
             "sample":[{"name":"10-20人","color":"#f0f"},{"name":"20-40人","color":"#ff0"},{"name":"40-60人","color":"#0ff"},{"name":"60-80人","color":"#f00"}],
             "popWin":function(t,data){
-                return "<div id='mapTip'><span>"+data.name+"</span><span>"+data.regionId+"</span></div>"
+                return "<div><span>"+data.name+"</span><br/><span>"+data.regionId+"</span></div>"
             },
             "elemClick":function(event,t,data){
 
@@ -63,7 +63,6 @@
                 "fill":"#ac0"
             },
             "setText":function(t,data){
-
                 if(data.name == "南邵镇"){
                     return {
                         "x":0,
