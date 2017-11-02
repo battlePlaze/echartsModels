@@ -14,7 +14,7 @@
     "type": "git",
     "url": "http://130.10.8.210/bksxfed/fedInterface/sxcolormap.git"
   },
-  "author": "雷佳伟",
+  "author": "郑玉燕",
   "maintainers": [
     {
       "name": "郑玉燕",
@@ -37,7 +37,6 @@
 
   },
   "devDependencies": {
-    "raphael": "^2.2.7",
     "jquery": "1.12.4"
   }
 }

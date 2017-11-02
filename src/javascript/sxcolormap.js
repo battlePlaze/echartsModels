@@ -61,12 +61,12 @@ window.console = window.console || (function () {
                         if(pathArr[i].data.fill){
                             tempStyle.fill = pathArr[i].data.fill;
                         }else{
-                            console.log(pathArr[i].data.name +'没有颜色值,regionId为' + pathArr[i].data.regionId);
+                            console.log(pathArr[i].data.name +'没有颜色值,rid为' + pathArr[i].data.rid);
                         }
                     }else{
                         tempStyle.fill = randomColor();
                     }
-                    var elem = r.path(pathArr[i].path).attr(tempStyle).click(function(event){
+                    var elem = r.path(pathArr[i].path[0]['path']).attr(tempStyle).click(function(event){
                         if(arg[1].click){
                             arg[1].click(event,this,$(this).data("data"));
                         }
@@ -122,7 +122,7 @@ window.console = window.console || (function () {
 
 
             }else{
-                throw new Error('该区域没有svg数据请联系软件设计部');
+                //throw new Error('该区域没有svg数据请联系软件设计部');
             }
 
         }
@@ -134,7 +134,9 @@ window.console = window.console || (function () {
             }
 
             if($.isArray(obj)){
-                recursionPathByArr($.mapSvg,obj);
+                returnData = recursionPathByArr($.mapSvg,obj);
+                //console.log("parent----")
+                //console.log(res)
             }
             return returnData;
         }
@@ -144,7 +146,7 @@ window.console = window.console || (function () {
         //迭代 此处有优化 行政区划规律不清楚 可减少迭代
         function recursionPath(arr,obj){
             for(var i = 0 ; i < arr.length;i++){
-                if(arr[i].regionId === obj){
+                if(arr[i].rid === obj){
                     returnData = arr[i]['children'];
                     return;
                 }else{
@@ -158,10 +160,12 @@ window.console = window.console || (function () {
 
 
         //迭代 此处有优化 行政区划规律不清楚 可减少迭代
-        function recursionPathByArr(arr,obj){
+        function recursionPathByArr(arr,obj,par){
+            //根据后台传入的数据找path
+            /*
             for(var i = 0 ; i < arr.length; i++){
                 for(var j = 0; j < obj.length;j++){
-                    if(arr[i]["regionId"] === obj[j]["regionId"]){
+                    if(arr[i]["rid"] === obj[j]["rid"]){
                         arr[i].data = obj[j];
                         returnData.push(arr[i]);
                         obj.splice(j,1);
@@ -172,6 +176,36 @@ window.console = window.console || (function () {
                     arguments.callee(arr[i]['children'],obj);
                 }
             }
+            */
+
+
+            //根据原有path找
+            if(!par){
+                par = [];
+            }
+            for(var i = 0; i < arr.length;i++){
+
+                var rid = arr[i].rid;
+                var cprid = arr[i].prid;
+                if(arr[i].rid === obj[0].rid){
+                    return par.pop();
+                }
+
+                //returnData = arr[i];
+
+                if($.isArray(arr[i]['children'])){
+                    par.push(arr[i]);
+                    var res = arguments.callee(arr[i]['children'],obj,par);
+                    if(res){
+                        return res;
+                    }else {
+                        par.pop();
+                    }
+                }
+            }
+
+
+
         }
 
         //地图悬浮
