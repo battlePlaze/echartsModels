@@ -29,7 +29,7 @@ window.console = window.console || (function () {
         mapSet.offsetX = mapSet.offsetX || 0;
         mapSet.offsetY = mapSet.offsetY || 0;
 
-        mapSet.blockStyle = mapSet.blockStyle || {"cursor":"pointer", "stroke-width":"1.1", "stroke":"#6e6f6d","fill":"#fff"};
+        mapSet.blockStyle = mapSet.blockStyle || {"cursor":"pointer", "stroke-width":"1.1", "stroke":"#6e6f6d","fill":"#6e6f6d"};
 
         //清空地图
         _this.empty();
@@ -46,6 +46,7 @@ window.console = window.console || (function () {
             if(typeof arg[0] === "string" || $.isArray(arg[0])){
                 pathArr = getPath(arg[0]);
             }
+
 
             if(pathArr.length > 0){
                 //绘制对象
@@ -85,15 +86,20 @@ window.console = window.console || (function () {
                     var bbox = elem.getBBox(false);
                     var text_x = bbox.x + (bbox.width / 2);
                     var text_y = bbox.y + (bbox.height / 2);
+                    var fontsize = "6px";
+                    if(pathArr[i]['fontsize']){
+                        fontsize = pathArr[i]['fontsize'];
+                    }
+
 
                     var textStyle = {
                         "font-family":"微软雅黑",
-                        "font-size":"6px",
+                        "font-size": fontsize,
                         "cursor":"pointer",
                         "fill":"#000"
                     };
                     $.extend(true,textStyle,arg[1].textStyle);
-                    var showName = pathArr[i].data['showName'] || pathArr[i].data['name'] || pathArr[i]['name'];
+                    var showName = pathArr[i]['showname'] || pathArr[i]['name'];
                     var textElem = r.text(text_x,text_y,showName).attr(textStyle).click(function(){
 
                     }).mouseover(function(event){
@@ -106,7 +112,15 @@ window.console = window.console || (function () {
                     });
                     $(textElem).data("data",pathArr[i]);
 
+
+                    console.log(pathArr[i]);
+                    textElem.translate(pathArr[i].x,pathArr[i].y);
+                    if(pathArr[i].d === 'v'){
+                        $(textElem[0]).attr("writing-mode","tb");
+                    }
+
                     if(typeof arg[1].setText === 'function'){
+
                         var setText = arg[1].setText(_this,pathArr[i].data);
 
                         if(setText){
@@ -120,9 +134,8 @@ window.console = window.console || (function () {
 
                 }
 
-
             }else{
-                //throw new Error('该区域没有svg数据请联系软件设计部');
+                throw new Error('该区域没有svg数据请联系软件设计部');
             }
 
         }
@@ -134,9 +147,22 @@ window.console = window.console || (function () {
             }
 
             if($.isArray(obj)){
-                returnData = recursionPathByArr($.mapSvg,obj);
-                //console.log("parent----")
-                //console.log(res)
+                var res = recursionPathByArr($.mapSvg,obj);
+                if(res && res.children && $.isArray(res.children)){
+                    for(var i = 0 ; i < res.children.length; i++){
+                        for(var j = 0; j < obj.length;j++){
+                            if(res.children[i]["rid"] === obj[j]["rid"]){
+                                res.children[i].data = obj[j];
+                            }
+                        }
+                        if(res.children[i].data === undefined){
+                            console.log(res.children[i]["name"] + ":"+ res.children[i]["rid"] + '没有数据');
+                        }
+
+                    }
+                }
+
+                returnData = res.children;
             }
             return returnData;
         }
