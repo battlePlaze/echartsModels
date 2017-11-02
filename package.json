@@ -14,7 +14,7 @@
     "type": "git",
     "url": "http://130.10.8.210/bksxfed/fedInterface/sxcolormap.git"
   },
-  "author": "雷佳伟",
+  "author": "郑玉燕",
   "maintainers": [
     {
       "name": "郑玉燕",
@@ -33,11 +33,17 @@
     "url": "http://130.10.8.210/bksxfed/fedInterface/sxcolormap/issues"
   },
   "homepage": "http://130.10.8.210/bksxfed/fedInterface/sxcolormap.git#README.md",
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
-    "raphael": "^2.2.7",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-cached": "^1.1.1",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.2",
+    "imagemin-pngquant": "^5.0.0",
     "jquery": "1.12.4"
   }
 }

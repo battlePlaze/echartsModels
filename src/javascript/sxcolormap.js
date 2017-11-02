@@ -29,7 +29,7 @@ window.console = window.console || (function () {
         mapSet.offsetX = mapSet.offsetX || 0;
         mapSet.offsetY = mapSet.offsetY || 0;
 
-        mapSet.blockStyle = mapSet.blockStyle || {"cursor":"pointer", "stroke-width":"1.1", "stroke":"#6e6f6d","fill":"#fff"};
+        mapSet.blockStyle = mapSet.blockStyle || {"cursor":"pointer", "stroke-width":"1.1", "stroke":"#6e6f6d","fill":"#6e6f6d"};
 
         //清空地图
         _this.empty();
@@ -47,6 +47,7 @@ window.console = window.console || (function () {
                 pathArr = getPath(arg[0]);
             }
 
+
             if(pathArr.length > 0){
                 //绘制对象
                 r = Raphael(ranId,parseInt(_this.width()),parseInt(_this.height()));
@@ -61,12 +62,12 @@ window.console = window.console || (function () {
                         if(pathArr[i].data.fill){
                             tempStyle.fill = pathArr[i].data.fill;
                         }else{
-                            console.log(pathArr[i].data.name +'没有颜色值,regionId为' + pathArr[i].data.regionId);
+                            console.log(pathArr[i].data.name +'没有颜色值,rid为' + pathArr[i].data.rid);
                         }
                     }else{
                         tempStyle.fill = randomColor();
                     }
-                    var elem = r.path(pathArr[i].path).attr(tempStyle).click(function(event){
+                    var elem = r.path(pathArr[i].path[0]['path']).attr(tempStyle).click(function(event){
                         if(arg[1].click){
                             arg[1].click(event,this,$(this).data("data"));
                         }
@@ -85,15 +86,20 @@ window.console = window.console || (function () {
                     var bbox = elem.getBBox(false);
                     var text_x = bbox.x + (bbox.width / 2);
                     var text_y = bbox.y + (bbox.height / 2);
+                    var fontsize = "6px";
+                    if(pathArr[i]['fontsize']){
+                        fontsize = pathArr[i]['fontsize'];
+                    }
+
 
                     var textStyle = {
                         "font-family":"微软雅黑",
-                        "font-size":"6px",
+                        "font-size": fontsize,
                         "cursor":"pointer",
                         "fill":"#000"
                     };
                     $.extend(true,textStyle,arg[1].textStyle);
-                    var showName = pathArr[i].data['showName'] || pathArr[i].data['name'] || pathArr[i]['name'];
+                    var showName = pathArr[i]['showname'] || pathArr[i]['name'];
                     var textElem = r.text(text_x,text_y,showName).attr(textStyle).click(function(){
 
                     }).mouseover(function(event){
@@ -106,7 +112,15 @@ window.console = window.console || (function () {
                     });
                     $(textElem).data("data",pathArr[i]);
 
+
+                    console.log(pathArr[i]);
+                    textElem.translate(pathArr[i].x,pathArr[i].y);
+                    if(pathArr[i].d === 'v'){
+                        $(textElem[0]).attr("writing-mode","tb");
+                    }
+
                     if(typeof arg[1].setText === 'function'){
+
                         var setText = arg[1].setText(_this,pathArr[i].data);
 
                         if(setText){
@@ -119,7 +133,6 @@ window.console = window.console || (function () {
                     }
 
                 }
-
 
             }else{
                 throw new Error('该区域没有svg数据请联系软件设计部');
@@ -134,7 +147,22 @@ window.console = window.console || (function () {
             }
 
             if($.isArray(obj)){
-                recursionPathByArr($.mapSvg,obj);
+                var res = recursionPathByArr($.mapSvg,obj);
+                if(res && res.children && $.isArray(res.children)){
+                    for(var i = 0 ; i < res.children.length; i++){
+                        for(var j = 0; j < obj.length;j++){
+                            if(res.children[i]["rid"] === obj[j]["rid"]){
+                                res.children[i].data = obj[j];
+                            }
+                        }
+                        if(res.children[i].data === undefined){
+                            console.log(res.children[i]["name"] + ":"+ res.children[i]["rid"] + '没有数据');
+                        }
+
+                    }
+                }
+
+                returnData = res.children;
             }
             return returnData;
         }
@@ -144,7 +172,7 @@ window.console = window.console || (function () {
         //迭代 此处有优化 行政区划规律不清楚 可减少迭代
         function recursionPath(arr,obj){
             for(var i = 0 ; i < arr.length;i++){
-                if(arr[i].regionId === obj){
+                if(arr[i].rid === obj){
                     returnData = arr[i]['children'];
                     return;
                 }else{
@@ -158,10 +186,12 @@ window.console = window.console || (function () {
 
 
         //迭代 此处有优化 行政区划规律不清楚 可减少迭代
-        function recursionPathByArr(arr,obj){
+        function recursionPathByArr(arr,obj,par){
+            //根据后台传入的数据找path
+            /*
             for(var i = 0 ; i < arr.length; i++){
                 for(var j = 0; j < obj.length;j++){
-                    if(arr[i]["regionId"] === obj[j]["regionId"]){
+                    if(arr[i]["rid"] === obj[j]["rid"]){
                         arr[i].data = obj[j];
                         returnData.push(arr[i]);
                         obj.splice(j,1);
@@ -172,6 +202,36 @@ window.console = window.console || (function () {
                     arguments.callee(arr[i]['children'],obj);
                 }
             }
+            */
+
+
+            //根据原有path找
+            if(!par){
+                par = [];
+            }
+            for(var i = 0; i < arr.length;i++){
+
+                var rid = arr[i].rid;
+                var cprid = arr[i].prid;
+                if(arr[i].rid === obj[0].rid){
+                    return par.pop();
+                }
+
+                //returnData = arr[i];
+
+                if($.isArray(arr[i]['children'])){
+                    par.push(arr[i]);
+                    var res = arguments.callee(arr[i]['children'],obj,par);
+                    if(res){
+                        return res;
+                    }else {
+                        par.pop();
+                    }
+                }
+            }
+
+
+
         }
 
         //地图悬浮

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>map</title>
-    <link href="styles/s1/css/colormap.css" type="text/css" rel="stylesheet"/>
+    <link href="styles/colormap.css" type="text/css" rel="stylesheet"/>
 </head>
 <style>
     #map{
@@ -20,32 +20,37 @@
 </body>
 </html>
 <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="common/js/svg.js"></script>
-<script type="text/javascript" src="common/js/raphael.min.js"></script>
-<script type="text/javascript" src="common/js/sxcolormap.js"></script>
+<script type="text/javascript" src="javascript/svg.js"></script>
+<script type="text/javascript" src="javascript/raphael.min.js"></script>
+<script type="text/javascript" src="javascript/sxcolormap.js"></script>
 <script type="text/javascript">
     $(function(){
 
         var data = [
             {
-                "regionId":"110114104000",
+                "rid":"110114104000",
                 "name":"阳坊镇",
                 "fill":"#ff0"
             },
             {
-                "regionId":"110114111000",
+                "rid":"110114111000",
                 "name":"南邵镇",
                 "fill":"#f00"
             },
             {
-                "regionId":"110114002000",
+                "rid":"110114002000",
                 "name":"南口镇",
                 "fill":"#00f"
             },
             {
-                "regionId":"110114118000",
+                "rid":"110114118000",
                 "name":"流村镇",
                 "fill":"#f0f"
+            },
+            {
+                "rid":"110114901000",
+                "name":"北企",
+                "fill":"#fdf"
             }
         ];
 
@@ -54,16 +59,16 @@
             "offsetY":0,
             "sample":[{"name":"10-20人","color":"#f0f"},{"name":"20-40人","color":"#ff0"},{"name":"40-60人","color":"#0ff"},{"name":"60-80人","color":"#f00"}],
             "popWin":function(t,data){
-                return "<div><span>"+data.name+"</span><br/><span>"+data.regionId+"</span></div>"
+                return "<div><span>"+data.name+"</span><br/><span>"+data.rid+"</span></div>"
             },
             "elemClick":function(event,t,data){
 
             },
             "textStyle":{
-                "fill":"#ac0"
+                "fill":"#000"
             },
             "setText":function(t,data){
-                if(data.name == "南邵镇"){
+                if(data && data.name == "南邵镇"){
                     return {
                         "x":0,
                         "y":-3,
