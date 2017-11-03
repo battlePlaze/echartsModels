@@ -1,6 +1,8 @@
-#插件安装
+# 插件安装
 `npm install sxcolormap --save`
+
 或
+
 `git clone git@130.10.8.210:bksxfed/fedInterface/sxcolormap.git`
 
 此插件依赖jquery，插件加载之前请加载jquery,jquery版本高于1.7以上
