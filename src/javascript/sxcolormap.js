@@ -20,7 +20,9 @@ window.console = window.console || (function () {
         var mapSet = {};
 
 
-
+        if(!arg[1]){
+            arg[1] = {};
+        }
 
         //地图设置
         $.extend(true,mapSet,arg[1]);
@@ -31,15 +33,11 @@ window.console = window.console || (function () {
 
         mapSet.blockStyle = mapSet.blockStyle || {"cursor":"pointer", "stroke-width":"1.1", "stroke":"#6e6f6d","fill":"#6e6f6d"};
 
-        //清空地图
-        _this.empty();
 
-        //添加元素，不破坏原有元素的属性
-        var ranId = randomId();
-        _this.append("<div id='"+ ranId +"' class='svgDiv'></div>");
 
         //画
         function drawMap(){
+
             var pathArr = [];
             //图例
             mapSample();
@@ -49,6 +47,14 @@ window.console = window.console || (function () {
 
 
             if(pathArr.length > 0){
+
+                //清空地图
+                _this.empty();
+
+                //添加元素，不破坏原有元素的属性
+                var ranId = randomId();
+                _this.append("<div id='"+ ranId +"' class='svgDiv'></div>");
+
                 //绘制对象
                 r = Raphael(ranId,parseInt(_this.width()),parseInt(_this.height()));
                 r.setViewBox(mapSet.offsetX,mapSet.offsetY,mapSet.viewX,mapSet.viewY);
@@ -69,7 +75,7 @@ window.console = window.console || (function () {
                     }
                     var elem = r.path(pathArr[i].path[0]['path']).attr(tempStyle).click(function(event){
                         if(arg[1].click){
-                            arg[1].click(event,this,$(this).data("data"));
+                            arg[1].click(event,this,$(this).data('data'));
                         }
                     }).mouseover(function(event){
                         setPop(event,this,$(this).data("data"));
@@ -98,7 +104,7 @@ window.console = window.console || (function () {
                         "cursor":"pointer",
                         "fill":"#000"
                     };
-                    $.extend(true,textStyle,arg[1].textStyle);
+                    $.extend(true,textStyle,arg[1].textStyle ? arg[1].textStyle : {});
                     var showName = pathArr[i]['showname'] || pathArr[i]['name'];
                     var textElem = r.text(text_x,text_y,showName).attr(textStyle).click(function(){
 
@@ -113,9 +119,9 @@ window.console = window.console || (function () {
                     $(textElem).data("data",pathArr[i]);
 
 
-                    console.log(pathArr[i]);
+
                     textElem.translate(pathArr[i].x,pathArr[i].y);
-                    if(pathArr[i].d === 'v'){
+                    if(pathArr[i].d === 'y'){
                         $(textElem[0]).attr("writing-mode","tb");
                     }
 
@@ -135,7 +141,9 @@ window.console = window.console || (function () {
                 }
 
             }else{
-                throw new Error('该区域没有svg数据请联系软件设计部');
+                //throw new Error('该区域没有svg数据请联系软件设计部');
+                console.log('该区域没有svg数据请联系软件设计部');
+                return ;
             }
 
         }
@@ -251,6 +259,7 @@ window.console = window.console || (function () {
             if(arg[1]){
                 if(typeof arg[1].popWin === "function"){
                    htmlStr =  arg[1].popWin(t,data);
+                    $('#mapTip').remove();
                    if(/id=['"]mapTip['"]/igm.test(htmlStr)){
                        $(htmlStr).appendTo('body');
                    }else{

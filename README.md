@@ -88,7 +88,7 @@ $('#map').colorMap(arg1,arg2);
 + viewY:地图的视图(默认值为`262`,当感觉数据快不是特别合理时可进行设置，正常情况下不建议修改)
 + sample:地图图例，数据为数组，数组中的对象至少包含`name`和`color`属性
 + popWin:弹窗，类型为`function`,有两个参数，第一个参数为选中（鼠标悬浮）的数据块，不建议对其进行操作，第二个参数为选中数据块后台传入的数据，`popWin`方法需返回弹窗的`html`代码字符串，如果自定义了弹窗的样式，请在弹窗的元素中定义一个`id`为`mapTip`的元素，如果没有自定义样式则可不用定义`id`为`mapTip`的元素
-+ elemClick:数据快点击事件，类型为`function`，有三个参数，第一个参数为`event`对象，第二个参数为当前被点击的`数据块`，不建议对其进行操作，第三个参数为后台传入的`相关数据`
++ click:数据快点击事件，类型为`function`，有三个参数，第一个参数为`event`对象，第二个参数为当前被点击的`数据块`，不建议对其进行操作，第三个参数为后台传入的`相关数据`
 + textStyle:设置地图上文字的样式
 + setText：设置每一个地图上的位子，在每次文字被创建时都会被调用,类型为`function`，类型有两个参数，一个为当前初始化的`对象`，一个为后台传入的`数据`，在使用后台传入的数据时请进行判断是否为`空`或者`未定义`
 
@@ -111,7 +111,7 @@ $('#map').colorMap("110114000000",{
     "popWin":function(t,data){
         return "<div><span>"+data.name+"</span><br/><span>"+data.rid+"</span></div>"
     },
-    "elemClick":function(event,t,data){
+    "click":function(event,t,data){
 
     },
     "textStyle":{
@@ -166,7 +166,7 @@ $('#map').colorMap(data,{
     "popWin":function(t,data){
         return "<div><span>"+data.name+"</span><br/><span>"+data.rid+"</span></div>"
     },
-    "elemClick":function(event,t,data){
+    "click":function(event,t,data){
 
     },
     "textStyle":{

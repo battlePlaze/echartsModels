@@ -54,6 +54,7 @@
             }
         ];
 
+        /*
         $('#map').colorMap(data,{
             "offsetX":-10,
             "offsetY":0,
@@ -77,5 +78,18 @@
                 }
             }
         });
+        */
+
+        var mapdataSet = {
+            "click":function(event,t,d){
+                if(d.rid){
+                    $('#map').colorMap(d.rid,mapdataSet);
+                }
+            },
+            "popWin":function(t,data){
+                return "<div><span>"+data.name+"</span><br/><span>"+data.rid+"</span></div>"
+            }
+        }
+        $('#map').colorMap('110000000000',mapdataSet);
     });
 </script>
