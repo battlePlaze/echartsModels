@@ -37,11 +37,13 @@ gulp.task('script',function(){
         .pipe(rename({suffix:'.min'}))
         .pipe(gulp.dest('dist'));
 
+
     gulp.src(['./src/javascript/svg.js'])
         .pipe(gulp.dest('dist'))
         .pipe(uglify())
         .pipe(rename({suffix:'.min'}))
         .pipe(gulp.dest('dist'));
+
 
 
 });

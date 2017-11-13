@@ -33,14 +33,14 @@ window.console = window.console || (function () {
 
         mapSet.blockStyle = mapSet.blockStyle || {"cursor":"pointer", "stroke-width":"1.1", "stroke":"#6e6f6d","fill":"#6e6f6d"};
 
-
+        var ranId = randomId();
 
         //画
         function drawMap(){
 
             var pathArr = [];
             //图例
-            mapSample();
+
             if(typeof arg[0] === "string" || $.isArray(arg[0])){
                 pathArr = getPath(arg[0]);
             }
@@ -52,8 +52,10 @@ window.console = window.console || (function () {
                 _this.empty();
 
                 //添加元素，不破坏原有元素的属性
-                var ranId = randomId();
+
                 _this.append("<div id='"+ ranId +"' class='svgDiv'></div>");
+
+                mapSample();
 
                 //绘制对象
                 r = Raphael(ranId,parseInt(_this.width()),parseInt(_this.height()));
@@ -320,6 +322,7 @@ window.console = window.console || (function () {
         //图例
         function mapSample(){
             var htmlStr = '';
+
             if(arg[1]){
                 if($.isArray(arg[1].sample)){
                     htmlStr = '<ul class="mapSample">';
@@ -335,6 +338,8 @@ window.console = window.console || (function () {
                             htmlStr =  htmlStr + '</ul>'
                         }
                     }
+
+
                     $('#' + ranId).append(htmlStr);
                     return;
                 }
