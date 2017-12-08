@@ -10,9 +10,7 @@ window.console = window.console || (function () {
 })();
 
 (function(window,$){
-
     $.fn.colorMap = function(){
-
         var arg = arguments;//参数
         var _this = $(this);//当前调用对象
         var returnData = [];//数据
@@ -109,7 +107,9 @@ window.console = window.console || (function () {
                     $.extend(true,textStyle,arg[1].textStyle ? arg[1].textStyle : {});
                     var showName = pathArr[i]['showname'] || pathArr[i]['name'];
                     var textElem = r.text(text_x,text_y,showName).attr(textStyle).click(function(){
-
+						if(arg[1].click){
+                            arg[1].click(event,this,$(this).data('data'));
+                        }
                     }).mouseover(function(event){
                         setPop(event,this,$(this).data("data"));
                         setPopPosition(event);
@@ -155,7 +155,7 @@ window.console = window.console || (function () {
             if(typeof obj === 'string') {
                 recursionPath($.mapSvg, obj);
             }
-
+			
             if($.isArray(obj)){
                 var res = recursionPathByArr($.mapSvg,obj);
                 if(res && res.children && $.isArray(res.children)){
@@ -171,7 +171,7 @@ window.console = window.console || (function () {
 
                     }
                 }
-
+				console.log(res[0]);
                 returnData = res.children;
             }
             return returnData;
@@ -246,7 +246,7 @@ window.console = window.console || (function () {
 
         //地图悬浮
         function mapMouseover(){
-
+			
         }
 
         //地图点击
